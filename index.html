@@ -596,8 +596,6 @@ img[src*="emblem"]{
 
 .main-container{
     flex-direction:column !important;
-    /* allow visible overflow so sticky/fixed footers work */
-    overflow: visible !important;
 }
 
 .question-container{
@@ -623,57 +621,142 @@ img[src*="emblem"]{
     display:block;
     position:fixed;
     right:15px;
-    bottom:120px; /* raised to avoid overlap with footer */
+    bottom:80px;
     z-index:10000;
     padding:12px 16px;
     border:none;
     border-radius:30px;
 }
 
-/* Make action footer fixed to bottom so it's always visible on small screens */
-.action-footer{
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    z-index: 10001 !important;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.08) !important;
-    padding: 12px 16px !important;
-    background: #f5f5f5 !important;
-}
-
-/* prevent content hiding behind fixed footer */
-.question-content{
-    padding-bottom: 160px !important; /* reserve space for fixed footer */
-    max-height: calc(100vh - 160px) !important;
-    overflow-y: auto !important;
-}
-
-/* make submit button more accessible */
-.btn-submit{
-    min-width: 100px !important;
-    padding: 10px 16px !important;
-    font-size: 1rem !important;
-}
-
-.action-footer .btn-group{
-    flex-wrap:wrap !important;
-    gap:8px !important;
-}
-
+.action-footer,
 .footer-buttons,
 .button-container{
     flex-wrap:wrap !important;
 }
 
-/* allow page scrolling on mobile and let fixed footer work */
-body {
-    overflow: auto !important;
-    height: auto !important;
-}
-
 button{
     touch-action:manipulation;
+}
+}
+
+
+/* ===== Responsive V3 : Mobile + Tablet + Desktop ===== */
+
+.mobile-palette-toggle{display:none;}
+
+@media (max-width:1024px){
+
+body{
+overflow:auto !important;
+}
+
+.main-container{
+flex-direction:column !important;
+}
+
+.question-container{
+width:100% !important;
+}
+
+.palette-container{
+position:fixed !important;
+top:0;
+right:-100%;
+width:85%;
+height:100vh;
+z-index:9999;
+overflow-y:auto;
+transition:right .3s ease;
+background:#fff;
+}
+
+.palette-container.show{
+right:0 !important;
+}
+
+.mobile-palette-toggle{
+display:block;
+position:fixed;
+right:15px;
+bottom:90px;
+z-index:10000;
+}
+
+.candidate-bar{
+flex-wrap:wrap;
+padding:10px;
+gap:10px;
+}
+
+.question-content{
+padding-bottom:240px !important;
+}
+
+.action-footer{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+z-index:9998;
+background:#fff;
+display:flex !important;
+flex-direction:column;
+gap:8px;
+padding:8px;
+box-shadow:0 -2px 10px rgba(0,0,0,.15);
+}
+
+.action-footer .btn-group{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:6px;
+width:100%;
+}
+
+.action-footer .btn{
+width:100%;
+font-size:12px;
+padding:10px 6px;
+}
+
+#result-screen{
+overflow-y:auto !important;
+height:auto !important;
+}
+
+.result-container{
+max-width:100% !important;
+margin:10px !important;
+padding:15px !important;
+}
+
+.result-footer-buttons{
+display:flex !important;
+flex-wrap:wrap !important;
+gap:10px;
+}
+
+.result-footer-buttons .btn{
+flex:1;
+min-width:180px;
+}
+
+.analysis-table{
+display:block;
+overflow-x:auto;
+white-space:nowrap;
+}
+}
+
+@media (max-width:768px){
+.action-footer .btn-group{
+grid-template-columns:1fr;
+}
+.result-footer-buttons{
+flex-direction:column !important;
+}
+.result-footer-buttons .btn{
+width:100%;
 }
 }
 
@@ -697,7 +780,7 @@ button{
                     Ministry of Education<br>
                     <span style="font-size: 0.75rem; font-weight: normal; color: #777;">Government of India</span>
                 </div>
-                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymous" re[...]
+                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymous" referrerpolicy="no-referrer">
               </div>
         </header>
 
@@ -713,7 +796,7 @@ button{
                     <!-- Dynamic Resume Box in Devnagari -->
                     <div id="resume-panel" class="resume-options-container">
                         <p style="font-weight: bold; color: #e65100; margin-bottom: 5px;">⚠️ पिछला सहेजा गया सत्र मिला!</p>
-                        <p style="font-size: 0.85rem; color: #555;">हमें आपकी पिछली परीक्षा की प्रगति मिली है। क्या �[...]</p>
+                        <p style="font-size: 0.85rem; color: #555;">हमें आपकी पिछली परीक्षा की प्रगति मिली है। क्या आप उसे वहीं से शुरू करना चाहते हैं?</p>
                         <div class="resume-btn-group">
                             <button class="btn-small btn-resume-action" onclick="handleResumeDecision(true)">प्रगति फिर से शुरू करें (Resume)</button>
                             <button class="btn-small btn-restart-action" onclick="handleResumeDecision(false)">शुरुआत से शुरू करें (Start Over)</button>
@@ -763,7 +846,7 @@ button{
                     Ministry of Education<br>
                     <span style="font-size: 0.75rem; font-weight: normal; color: #777;">Government of India</span>
                 </div>
-                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymous" re[...]
+                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymous" referrerpolicy="no-referrer">
               </div>
         </header>
 
@@ -814,9 +897,6 @@ button{
                 <div class="question-grid" id="dynamic-grid"></div>
             </div>
         </div>
-
-        <!-- Mobile toggle button for palette (questions) -->
-        <button class="mobile-palette-toggle" onclick="togglePalette()">Questions</button>
     </div>
 
     <!-- SCREEN 3: DETAILED ANALYSIS & REPORT CARD -->
@@ -892,121 +972,1428 @@ button{
 },
 {
 "qNum": 2,
-"text": "जब मानव शरीर के एक भाग को दिए गए प्रशिक्षण का अन्तरण दूसरे भाग में हो जाता [...]",
-"options": ["(a) ऊर्ध्व अन्तरण", "(b) क्षैतिज अन्तरण", "(c) द्विपाश्विक अन्तरण", "(d) उपरोक्त मे��[...]"],
+"text": "जब मानव शरीर के एक भाग को दिए गए प्रशिक्षण का अन्तरण दूसरे भाग में हो जाता है तो इसे कहते हैं -",
+"options": ["(a) ऊर्ध्व अन्तरण", "(b) क्षैतिज अन्तरण", "(c) द्विपाश्विक अन्तरण", "(d) उपरोक्त में से कोई नहीं"],
 "correct_ans": 2
 },
-// ... rest of questions kept as in repo (trimmed here for readability)
+{
+"qNum": 3,
+"text": "दिए हुए प्राप्तांकों के समूह में जो प्राप्तांक बहुधा सबसे अधिक बार आता है उसे ______ कहते हैं।",
+"options": ["(a) बहुलांक", "(b) मध्यमान", "(c) मध्यांक", "(d) मानक विचलन"],
+"correct_ans": 0
+},
+{
+"qNum": 4,
+"text": "क्रियाप्रसूत अनुकूलन सिद्धान्त का प्रतिपादन ______ ने किया था।",
+"options": ["(a) पावलॉव", "(b) स्किनर", "(c) थॉर्नडाइक", "(d) कोहलर"],
+"correct_ans": 1
+},
+{
+"qNum": 5,
+"text": "अल्बर्ट बण्डूरा निम्न में किस सिद्धांत से सम्बन्धित हैं?",
+"options": ["(a) सामाजिक अधिगम सिद्धान्त", "(b) व्यवहारात्मक सिद्धान्त", "(c) विकास का संज्ञानात्मक सिद्धान्त", "(d) विकास का मनो-सामाजिक सिद्धांत"],
+"correct_ans": 0
+},
+{
+"qNum": 6,
+"text": "मानसिक आयु का प्रत्यय दिया था :",
+"options": ["(a) बिने-साइमन ने", "(b) स्टर्न ने", "(c) टर्मन ने", "(d) सिरिल बर्ट ने"],
+"correct_ans": 0
+},
+{
+"qNum": 7,
+"text": "निम्नलिखित में से कौन सा सीखने का नियम नहीं है?",
+"options": ["(a) तत्परता का नियम", "(b) तनाव का नियम", "(c) प्रभाव का नियम", "(d) अभ्यास का नियम"],
+"correct_ans": 1
+},
+{
+"qNum": 8,
+"text": "सीखने से सम्बद्ध प्रतिक्रिया सिद्धांत में पावलॉव ने प्रयोग किया -",
+"options": ["(a) बिल्ली पर", "(b) कुत्ते पर", "(c) बन्दर पर", "(d) चूहे पर"],
+"correct_ans": 1
+},
+{
+"qNum": 9,
+"text": "सूझ द्वारा सीखने के सिद्धांत का प्रतिपादन किया -",
+"options": ["(a) थॉर्नडाइक", "(b) कोहलर", "(c) पावलॉव", "(d) वुडवर्थ"],
+"correct_ans": 1
+},
+{
+"qNum": 10,
+"text": "कार्य को आरम्भ करने, जारी रखने और नियमित करने की प्रक्रिया है -",
+"options": ["(a) प्रेरणा", "(b) संवेदना", "(c) सीखना", "(d) प्रत्यक्षीकरण"],
+"correct_ans": 0
+},
+{
+"qNum": 11,
+"text": "विस्मृति कम करने का उपाय है -",
+"options": ["(a) सीखने में कमी", "(b) सीखने की त्रुटिपूर्ण विधि", "(c) पाठ की पुनरावृत्ति", "(d) स्मरण करने में कम ध्यान देना"],
+"correct_ans": 2
+},
+{
+"qNum": 12,
+"text": "क्रोध व भय प्रकार हैं -",
+"options": ["(a) अभिप्रेरणा", "(b) संवेग", "(c) परिकल्पना", "(d) मूलप्रवृत्ति"],
+"correct_ans": 1
+},
+{
+"qNum": 13,
+"text": "दूसरे व्यक्ति के बाह्य व्यवहार की नकल है -",
+"options": ["(a) सीखना", "(b) अनुकरण", "(c) कल्पना", "(d) चिन्तन"],
+"correct_ans": 1
+},
+{
+"qNum": 14,
+"text": "यदि पूर्व ज्ञान व अनुभव नये प्रकार के सीखने में सहायता करते हैं, तो उसे कहते हैं-",
+"options": ["(a) नकारात्मक प्रशिक्षण स्थानान्तरण", "(b) सकारात्मक प्रशिक्षण स्थानान्तरण", "(c) प्रशिक्षण स्थानान्तरण", "(d) सीखना"],
+"correct_ans": 1
+},
+{
+"qNum": 15,
+"text": "सीखी हुई बात को स्मरण रखने या पुनः स्मरण करने की असफलता को कहते हैं-",
+"options": ["(a) कल्पना", "(b) स्मृति", "(c) विस्मृति", "(d) ध्यान"],
+"correct_ans": 2
+},
+{
+"qNum": 16,
+"text": "टर्मन के अनुसार 90-100 बुद्धिलब्धि का बालक माना जाता है-",
+"options": ["(a) मन्द बुद्धि", "(b) सामान्य बुद्धि", "(c) श्रेष्ठ बुद्धि", "(d) क्षीण बुद्धि"],
+"correct_ans": 1
+},
+{
+"qNum": 17,
+"text": "हॉल का सिद्धांत निम्न में किसकी व्याख्या करता है?",
+"options": ["(a) बुद्धि की प्रकृति", "(b) अधिगम में अभिप्रेरण की भूमिका", "(c) मूल्यों का विकास", "(d) किशोरों का मनोविज्ञान"],
+"correct_ans": 3
+},
+{
+"qNum": 18,
+"text": "मानव व्यक्तित्व के मनो-लैंगिक विकास को निम्न में किसने महत्व दिया था?",
+"options": ["(a) कमेनियस", "(b) हॉल", "(c) हॉलिंगवर्थ", "(d) फ्रायड"],
+"correct_ans": 3
+},
+{
+"qNum": 19,
+"text": "मनोविज्ञान की प्रथम प्रयोगशाला को किसने स्थापित किया था?",
+"options": ["(a) डब्ल्यू वुण्ट", "(b) सिग्मण्ड फ्रायड", "(c) पावलॉव", "(d) वॉटसन"],
+"correct_ans": 0
+},
+{
+"qNum": 20,
+"text": "गेस्टाल्ट मनोविज्ञान की आधारशिला किसने रखी थी?",
+"options": ["(a) फ्रान्ज ब्रेन्टानो", "(b) मैक्स वर्थीमर", "(c) एडगर रूबिन", "(d) कर्ट लेविन"],
+"correct_ans": 1
+},
+{
+"qNum": 21,
+"text": "संघनन सिद्धान्त निम्न में किससे सम्बन्धित है?",
+"options": ["(a) अधिगम", "(b) अभिप्रेरण", "(c) स्मृति", "(d) सृजनात्मकता"],
+"correct_ans": 2
+},
+{
+"qNum": 22,
+"text": "क्षेत्र सिद्धान्त निम्न में किस वर्ग का योगदान है?",
+"options": ["(a) व्यवहारविदों का", "(b) संरचनाविदों का", "(c) मनोविश्लेषकों का", "(d) गेस्टाल्टवादियों का"],
+"correct_ans": 3
+},
+{
+"qNum": 23,
+"text": "भाटिया बैटरी का प्रयोग निम्न में किसके मापन हेतु किया जाता है?",
+"options": ["(a) व्यक्तित्व", "(b) रुचि", "(c) बुद्धि", "(d) अभिक्षमता"],
+"correct_ans": 2
+},
+{
+"qNum": 24,
+"text": "अभिक्रमायोजित अधिगम का प्रत्यय किसने दिया था?",
+"options": ["(a) हल", "(b) थॉर्नडाइक", "(c) स्किनर", "(d) वॉटसन"],
+"correct_ans": 2
+},
+{
+"qNum": 25,
+"text": "व्यावहारिक क्षमताओं में वह सापेक्ष स्थायी परिवर्तन जो कि प्रबलित अभ्यास का परिणाम होता है उसे क्या कहते हैं?",
+"options": ["(a) अधिगम", "(b) अभिप्रेरणा", "(c) अभिवृत्ति", "(d) अभिक्षमता"],
+"correct_ans": 0
+},
+{
+"qNum": 26,
+"text": "संज्ञान किस बुद्धि के सिद्धांत का हिस्सा है?",
+"options": ["(a) प्रतिदर्श सिद्धांत", "(b) समूहकारक सिद्धांत", "(c) गिलफोर्ड का सिद्धांत", "(d) फ्लूइड तथा क्रिस्टलाइज्ड सिद्धांत"],
+"correct_ans": 2
+},
+{
+"qNum": 27,
+"text": "आठ वर्ष के सुधीर की मानसिक आयु दस वर्ष है। उसकी बुद्धिलब्धि कितनी है?",
+"options": ["(a) 80", "(b) 100", "(c) 110", "(d) 125"],
+"correct_ans": 3
+},
+{
+"qNum": 28,
+"text": "संवेग का कौन-सा सिद्धान्त इस विचार को मानता है कि 'संवेगात्मक अनुभव संवेगात्मक व्यवहार पर आधारित हैं'?",
+"options": ["(a) जेम्सलैंग सिद्धांत", "(b) हाइपोथैलमिक सिद्धांत", "(c) सक्रियता सिद्धांत", "(d) अभिप्रेरण सिद्धांत"],
+"correct_ans": 0
+},
+{
+"qNum": 29,
+"text": "किसी इच्छा या आवश्यकता में रुकावट पड़ने पर उससे उत्पन्न होने वाला सांवेगिक तनाव ______ कहलाता है।",
+"options": ["(a) द्वन्द्व", "(b) कुण्ठा", "(c) चिन्ता", "(d) तनाव"],
+"correct_ans": 1
+},
+{
+"qNum": 30,
+"text": "कोहलबर्ग का सिद्धांत निम्न में किस विकास से सम्बन्धित है?",
+"options": ["(a) भाषा विकास", "(b) सामाजिक विकास", "(c) नैतिक विकास", "(d) शारीरिक विकास"],
+"correct_ans": 2
+},
+{
+"qNum": 31,
+"text": "भाषा-शिक्षण की पद्धति नहीं है-",
+"options": ["(a) किण्डरगार्टन", "(b) मॉण्टेसरी", "(c) डैक्राली", "(d) अभिक्रमित अनुदेशन"],
+"correct_ans": 3
+},
+{
+"qNum": 32,
+"text": "'बालक की प्रारम्भिक शिक्षा उसकी मातृभाषा में दी जाये' यह मानना है-",
+"options": ["(a) मॉण्टेसरी का", "(b) महात्मा गाँधी का", "(c) फ्रॉबेल का", "(d) क्लिपैट्रिक का"],
+"correct_ans": 1
+},
+{
+"qNum": 33,
+"text": "व्याकरण शिक्षण के लिये उपयुक्त नहीं है-",
+"options": ["(a) आगमन प्रणाली", "(b) निगमन प्रणाली", "(c) अव्याकृति प्रणाली", "(d) कक्षाभिनय प्रणाली"],
+"correct_ans": 3
+},
+{
+"qNum": 34,
+"text": "'आनन्द कादम्बिनी' पत्रिका का प्रकाशन कहाँ से होता है?",
+"options": ["(a) बनारस", "(b) मिर्जापुर", "(c) इलाहाबाद", "(d) लखनऊ"],
+"correct_ans": 1
+},
+{
+"qNum": 35,
+"text": "आदिकाल की रचना है-",
+"options": ["(a) अखरावट", "(b) छत्रसाल दसक", "(c) दीपशिखा", "(d) खुमान रासो"],
+"correct_ans": 3
+},
+{
+"qNum": 36,
+"text": "हिन्दी गद्य-शिक्षण की पाठ-योजना में उद्देश्य-कथन आता है",
+"options": ["(a) पूर्वज्ञान के पश्चात्", "(b) प्रस्तावना प्रश्न के पश्चात्", "(c) आदर्श वाचन के पश्चात्", "(d) मौन वाचन के पहले"],
+"correct_ans": 1
+},
+{
+"qNum": 37,
+"text": "शब्द का अर्थ स्पष्ट करने हेतु कौन सा तरीका सर्वाधिक उपयुक्त है?",
+"options": ["(a) वाक्य प्रयोग", "(b) व्याख्यान", "(c) भ्रमण", "(d) चित्र-निर्माण"],
+"correct_ans": 0
+},
+{
+"qNum": 38,
+"text": "'निरामिष' किसे कहते हैं?",
+"options": ["(a) माँस रहित भोजन", "(b) मोक्ष का इच्छुक", "(c) रात्रि में विचरण करने वाला", "(d) मृत्यु का इच्छुक"],
+"correct_ans": 0
+},
+{
+"qNum": 39,
+"text": "राष्ट्रवादी कवि रामधारीसिंह 'दिनकर' को 'उर्वशी' के लिए 'ज्ञानपीठ पुरस्कार' किस वर्ष प्रदान किया गया?",
+"options": ["(a) सन् 1971 ई. में", "(b) सन् 1972 ई. में", "(c) सन् 1973 ई. में", "(d) सन् 1974 ई. में"],
+"correct_ans": 1
+},
+{
+"qNum": 40,
+"text": "'शहद' शब्द है-",
+"options": ["(a) तत्सम", "(b) तद्भव", "(c) देशज", "(d) आगत"],
+"correct_ans": 3
+},
+{
+"qNum": 41,
+"text": "'वनिता' का प्रयोग किस अर्थ में होता है?",
+"options": ["(a) जंगल", "(b) स्त्री", "(c) पुस्तक", "(d) व्यवसायी"],
+"correct_ans": 1
+},
+{
+"qNum": 42,
+"text": "'मुकुंद' किसका पर्याय है?",
+"options": ["(a) विष्णु", "(b) शिव", "(c) सूर्य", "(d) कामदेव"],
+"correct_ans": 0
+},
+{
+"qNum": 43,
+"text": "'काहे री नलिनी तू कुम्हलानी तेरे ही नालि सरोवर पानी' पंक्ति के रचनाकार कौन हैं?",
+"options": ["(a) जायसी", "(b) रैदास", "(c) कबीर", "(d) दादू"],
+"correct_ans": 2
+},
+{
+"qNum": 44,
+"text": "आचार्य रामचन्द्र शुक्ल का निबंध संग्रह है-",
+"options": ["(a) माटी का फूल", "(b) चिन्तामणि", "(c) क्षण बोले कण मुसकाए", "(d) आलोक पर्व"],
+"correct_ans": 1
+},
+{
+"qNum": 45,
+"text": "निम्नलिखित में वर्तनी की दृष्टि से कौन सा शब्द-युग्म शुद्ध है?",
+"options": ["(a) बरात, बसंत", "(b) बारात, बसंत", "(c) बरात, वसंत", "(d) बारात, वसंत"],
+"correct_ans": 2
+},
+{
+"qNum": 46,
+"text": "'अर्ध-स्वर' है-",
+"options": ["(a) य, व", "(b) इ, उ", "(c) ऋ, ल", "(d) ऋ, ष"],
+"correct_ans": 0
+},
+{
+"qNum": 47,
+"text": "'चोर की दाढ़ी में तिनका' मुहावरे का सही अर्थ है-",
+"options": ["(a) अपराधी का अपनी दाढ़ी खुजलाना", "(b) अपराधी का शंकाग्रस्त रहना", "(c) अपराधी की पहचान हो जाना", "(d) अपराधी का अपनी पहचान छिपाना"],
+"correct_ans": 1
+},
+{
+"qNum": 48,
+"text": "'एक बार कही बात को दुहराते रहना' वाक्यांश के लिये एक शब्द है-",
+"options": ["(a) आगार", "(b) प्राक्कथन", "(c) पिष्टपेषण", "(d) प्रस्तावना"],
+"correct_ans": 2
+},
+{
+"qNum": 49,
+"text": "'बुद्धिहीन' शब्द व्याकरण की दृष्टि से किस संवर्ग में है?",
+"options": ["(a) संज्ञा", "(b) सर्वनाम", "(c) विशेषण", "(d) क्रिया"],
+"correct_ans": 2
+},
+{
+"qNum": 50,
+"text": "'छत से ईंट गिरी' वाक्य में कौन-सा कारक है?",
+"options": ["(a) अपादान", "(b) सम्बन्ध", "(c) अधिकरण", "(d) सम्प्रदान"],
+"correct_ans": 0
+},
+{
+"qNum": 51,
+"text": "'महोर्मि' का संधि-विच्छेद है-",
+"options": ["(a) महत् + उर्मि", "(b) महा + उर्मि", "(c) महा + ऊर्मि", "(d) महत् + मर्मि"],
+"correct_ans": 2
+},
+{
+"qNum": 52,
+"text": "'समष्टि' का विपरीतार्थी शब्द है-",
+"options": ["(a) विशिष्ट", "(b) अशिष्ट", "(c) अपुष्टि", "(d) व्यष्टि"],
+"correct_ans": 3
+},
+{
+"qNum": 53,
+"text": "'कर्पट' का तद्भव रूप है-",
+"options": ["(a) कपट", "(b) कारपेट", "(c) कपूर", "(d) कपड़ा"],
+"correct_ans": 3
+},
+{
+"qNum": 54,
+"text": "'रमणीय' में कौन-सा प्रत्यय है?",
+"options": ["(a) अनीय", "(b) ईय", "(c) रम", "(d) णीय"],
+"correct_ans": 0
+},
+{
+"qNum": 55,
+"text": "'बोरौ सबै रघुवंश कुठार की धार में बारन बजि सरत्थहिं। बान की वायु उड़ाव के लच्छन लच्छ करौं अरिहा समरत्थहिं।।' इन काव्य पंक्तियों में कौन सा रस है?",
+"options": ["(a) रौद्र रस", "(b) भयानक रस", "(c) वीभत्स रस", "(d) वीर रस"],
+"correct_ans": 0
+},
+{
+"qNum": 56,
+"text": "'श्री गुरु चरन सरोज रज, निज मन मुकुर सुधार। बरनौ रघुवर विमल जस, जो दायक फल चार।।' में छन्द है-",
+"options": ["(a) दोहा", "(b) सोरठा", "(c) रोला", "(d) बरवै"],
+"correct_ans": 0
+},
+{
+"qNum": 57,
+"text": "वाक्य शुद्ध है-",
+"options": ["(a) मोहन और गीता गा रही है", "(b) गीता और मोहन गा रहा है", "(c) मोहन और गीता गा रहे हैं", "(d) मोहन और गीता गा रही हैं"],
+"correct_ans": 2
+},
+{
+"qNum": 58,
+"text": "इन शब्दों में से कौन-सा शब्द हिन्दी शब्दकोश में सबसे अन्त में आएगा?",
+"options": ["(a) क्लीव", "(b) क्रम", "(c) कृषक", "(d) कृशानु"],
+"correct_ans": 0
+},
+{
+"qNum": 59,
+"text": "चराचरम् (जगत) में कौन सा समास है?",
+"options": ["(a) तत्पुरुष", "(b) द्वन्द्व", "(c) बहुब्रीहि", "(d) कर्मधारय"],
+"correct_ans": 1
+},
+{
+"qNum": 60,
+"text": "'अभ्यागत' शब्द में कौन सा उपसर्ग है?",
+"options": ["(a) अ", "(b) अभ्य", "(c) अभि", "(d) अभ्या"],
+"correct_ans": 2
+},
+{
+"qNum": 61,
+"text": "What kind of adjective is used in the following sentence? 'These mangoes are ripe.'",
+"options": ["(a) Quantitative", "(b) Possessive", "(c) Demonstrative", "(d) Interrogative"],
+"correct_ans": 2
+},
+{
+"qNum": 62,
+"text": "Choose the correct word to complete the following sentence: He insisted _______ seeing the documents.",
+"options": ["(a) on", "(b) to", "(c) in", "(d) by"],
+"correct_ans": 0
+},
+{
+"qNum": 63,
+"text": "How did Luz Long help Jesse Owens?",
+"options": [
+"(a) Luz Long advised Jesse to draw a line a few inches behind the board and aim at making his take off from there.",
+"(b) Luz Long advised Jesse to take rest for a few minutes.",
+"(c) Luz Long advised Jesse to forget that he was participating in a competition.",
+"(d) Luz Long advised Jesse not to accept the Master Race Theory of Hitler."
+],
+"correct_ans": 0
+},
+{
+"qNum": 64,
+"text": "Complete the following: Man is born, according to H.W. Longfellow, _______.",
+"options": ["(a) to die and be buried", "(b) to return to dust", "(c) to be up and doing", "(d) to pray to God"],
+"correct_ans": 2
+},
+{
+"qNum": 65,
+"text": "Complete the following sentence by choosing the correct option: No sooner did we go out on the road _______ it began to rain heavily.",
+"options": ["(a) when", "(b) than", "(c) then", "(d) but"],
+"correct_ans": 1
+},
+{
+"qNum": 66,
+"text": "The correct feminine of 'ram' is:",
+"options": ["(a) sita", "(b) toe", "(c) ewe", "(d) filly"],
+"correct_ans": 2
+},
+{
+"qNum": 67,
+"text": "Complete the following sentence with the correct option: _______ is the best story?",
+"options": ["(a) Yours", "(b) Your", "(c) Yours'", "(d) Your's"],
+"correct_ans": 0
+},
+{
+"qNum": 68,
+"text": "Identify the correct reported form of the given sentence: Ravi said to his friend, 'work hard'.",
+"options": [
+"(a) Ravi said to his friend you must work hard.",
+"(b) Ravi asked his friend that he must work hard.",
+"(c) Ravi advised his friend to work hard.",
+"(d) Ravi ordered his friend to work hard."
+],
+"correct_ans": 2
+},
+{
+"qNum": 69,
+"text": "Choose the correct figure of speech in the following sentence: Her mother too upon this occasion felt a pleasing distress.",
+"options": ["(a) Personification", "(b) Oxymoron", "(c) Hyperbole", "(d) Simile"],
+"correct_ans": 1
+},
+{
+"qNum": 70,
+"text": "Choose the word opposite in meaning to the given word: 'FRAILTY'",
+"options": ["(a) Emanciation", "(b) Strength", "(c) Health", "(d) Boldness"],
+"correct_ans": 1
+},
+{
+"qNum": 71,
+"text": "Didactic poetry means:",
+"options": ["(a) poetry which inspires", "(b) poetry which pleases", "(c) poetry which teaches", "(d) poetry which informs"],
+"correct_ans": 2
+},
+{
+"qNum": 72,
+"text": "Fill in the blank with the suitable form of verb: Either Munni or Chunni _______ lost her pen.",
+"options": ["(a) has", "(b) have", "(c) had", "(d) will have"],
+"correct_ans": 0
+},
+{
+"qNum": 73,
+"text": "Point out the word that has been wrongly used in this sentence: If you lose your passport in a foreign country it will effect you badly.",
+"options": ["(a) lose", "(b) effect", "(c) badly", "(d) foreign"],
+"correct_ans": 1
+},
+{
+"qNum": 74,
+"text": "Poetry teaching should be basically a process of:",
+"options": ["(a) sadness", "(b) joy", "(c) cry", "(d) anger"],
+"correct_ans": 1
+},
+{
+"qNum": 75,
+"text": "What are the two productive skills?",
+"options": ["(a) Listening-Reading", "(b) Speaking-Writing", "(c) Reading-Writing", "(d) Listening-Speaking"],
+"correct_ans": 1
+},
+{
+"qNum": 76,
+"text": "Linguistics is a study of:",
+"options": ["(a) Direct Method", "(b) Grammar Translation Method", "(c) Sounds", "(d) Human Language"],
+"correct_ans": 3
+},
+{
+"qNum": 77,
+"text": "Dyslexia is associated mainly with difficulties in:",
+"options": ["(a) reading", "(b) speaking", "(c) listening", "(d) writing"],
+"correct_ans": 0
+},
+{
+"qNum": 78,
+"text": "The purpose of 'rapid reading' is:",
+"options": ["(a) for interest", "(b) for specific detail", "(c) extended reading", "(d) seeking information"],
+"correct_ans": 1
+},
+{
+"qNum": 79,
+"text": "What does the Ganges symbolize, according to Jawaharlal Nehru?",
+"options": [
+"(a) It is a symbol of India's prosperity.",
+"(b) It is a symbol of India's age-long culture and civilization.",
+"(c) It is a symbol of changing seasons of India.",
+"(d) It is a symbol of India's struggle for freedom."
+],
+"correct_ans": 1
+},
+{
+"qNum": 80,
+"text": "What damaged the crop in Lencho's field?",
+"options": ["(a) Wild animals", "(b) Flood", "(c) Drought", "(d) Hailstones"],
+"correct_ans": 3
+},
+{
+"qNum": 81,
+"text": "What does Lorenzo order when he learns that Portia is on her way to Belmont?",
+"options": [
+"(a) A banquet to welcome the lady of the house",
+"(b) Music",
+"(c) A ring to match the one she once gave to Bassanio",
+"(d) Flowers"
+],
+"correct_ans": 1
+},
+{
+"qNum": 82,
+"text": "In court how does Antonio react to Shylock's insistence on collecting his pound of flesh?",
+"options": [
+"(a) He weeps openly.",
+"(b) He vows that he will meet Shylock's hatred with patience.",
+"(c) He curses Shylock's vengeance.",
+"(d) He makes an impassioned plea to the court to intervene on his behalf."
+],
+"correct_ans": 1
+},
+{
+"qNum": 83,
+"text": "According to Lorenzo's plan, how will Jessica escape from her father's house?",
+"options": [
+"(a) She will disguise herself as Lorenzo's torch bearer and slip out undetected.",
+"(b) She will leave during the night while Shylock is asleep.",
+"(c) She will take her father to a large public auction and get lost in the crowd.",
+"(d) She will fake her own death."
+],
+"correct_ans": 0
+},
+{
+"qNum": 84,
+"text": "How does Shylock initially describe his demand for a pound of flesh to Bassanio and Antonio?",
+"options": [
+"(a) As an opportunity for revenge",
+"(b) As his way of being charitable",
+"(c) As a harmless prank",
+"(d) As a means of generating friendship"
+],
+"correct_ans": 0
+},
+{
+"qNum": 85,
+"text": "What reason does Antonio give for being sad in the opening scene of the play?",
+"options": [
+"(a) He stands to lose a fortune in his present business ventures.",
+"(b) He owes a fantastic sum of money to Shylock.",
+"(c) He gives no reason.",
+"(d) The woman he loves does not return his feelings."
+],
+"correct_ans": 2
+},
+{
+"qNum": 86,
+"text": "Whom does Bassanio agree to bring with him to Belmont?",
+"options": ["(a) Old Gobbo", "(b) Gratiano", "(c) Antonio", "(d) Jessica"],
+"correct_ans": 1
+},
+{
+"qNum": 87,
+"text": "Point out the error in the following incorrect sentence: I can learn poems more easy than speeches.",
+"options": ["(a) I can", "(b) learn poems", "(c) more easy", "(d) than speeches"],
+"correct_ans": 2
+},
+{
+"qNum": 88,
+"text": "Point out the sentence in the active voice.",
+"options": [
+"(a) Why don't you have your eyes tested?",
+"(b) This notice has been altered.",
+"(c) Boys could not have done all this damage.",
+"(d) Steps had been cut in the ice by previous climbers."
+],
+"correct_ans": 2
+},
+{
+"qNum": 89,
+"text": "Point out the correct word to bring out the meaning in the sentence: Women have always dressed to _______ flaws.",
+"options": ["(a) disfigure", "(b) show", "(c) exhibit", "(d) camouflage"],
+"correct_ans": 3
+},
+{
+"qNum": 90,
+"text": "Point out the correct indirect speech of the sentence. 'Would you like to come with us?' they said.",
+"options": [
+"(a) They asked me to go with them.",
+"(b) They asked me if I would like to come with them.",
+"(c) They invited me to go with them.",
+"(d) They told me to come with them."
+],
+"correct_ans": 1
+},
+{
+"qNum": 91,
+"text": "$\\frac{14}{33}, \\frac{21}{22}, \\frac{42}{55}$ का म.स. है-",
+"options": ["(a) $\\frac{7}{330}$", "(b) $\\frac{42}{550}$", "(c) $\\frac{3}{321}$", "(d) $\\frac{21}{350}$"],
+"correct_ans": 0
+},
+{
+"qNum": 92,
+"text": "₹57 और 75 पैसों का पैसों में मूल्य है-",
+"options": ["(a) 575 पैसे", "(b) 775 पैसे", "(c) 57.75 पैसे", "(d) 5775 पैसे"],
+"correct_ans": 3
+},
+{
+"qNum": 93,
+"text": "संख्या $3^{99} - 3^{50}$ के इकाई स्थान का अंक है-",
+"options": ["(a) 0", "(b) 4", "(c) 6", "(d) 8"],
+"correct_ans": 3
+},
+{
+"qNum": 94,
+"text": "$138^{\\circ}$ के सम्पूरक का कोटिपूरक है-",
+"options": ["(a) $42^{\\circ}$", "(b) $48^{\\circ}$", "(c) $38^{\\circ}$", "(d) $90^{\\circ}$"],
+"correct_ans": 1
+},
+{
+"qNum": 95,
+"text": "<img src='95.png' alt='Diagram' style='max-width:100%; height:auto;' /> <br> संलग्न चित्र में रेखा खण्ड XY, $\\Delta ABC$ की भुजा AC के समान्तर है, जो $\\Delta ABC$ को दो बराबर क्षेत्रफल वाले भागों में विभाजित करती है, तो AX और AB का अनुपात होगा-",
+"options": ["(a) $\\sqrt{2}+1 : \\sqrt{2}$", "(b) $2-\\sqrt{2} : 2$", "(c) $1 : \\sqrt{2}$", "(d) $1 : 1$"],
+"correct_ans": 1
+},
+{
+"qNum": 96,
+"text": "वर्ष 2003 का प्रथम दिन बुधवार था। वर्ष 2005 का अंतिम दिन कौन सा रहा होगा?",
+"options": ["(a) शुक्रवार", "(b) रविवार", "(c) बुधवार", "(d) शनिवार"],
+"correct_ans": 3
+},
+{
+"qNum": 97,
+"text": "किसी त्रिभुज की भुजाएँ क्रमशः 35cm, 54cm और 61cm हैं। इसके सबसे बड़े शीर्षाभिलम्ब (Altitude) की लंबाई है-",
+"options": ["(a) $16\\sqrt{5}cm$", "(b) $10\\sqrt{5}cm$", "(c) $24\\sqrt{5}cm$", "(d) 28cm"],
+"correct_ans": 2
+},
+{
+"qNum": 98,
+"text": "दो संख्याओं का योगफल तथा गुणनफल क्रमशः 11 और 18 हैं, तब इन संख्याओं के व्युत्क्रमों का योग है-",
+"options": ["(a) $\\frac{2}{11}$", "(b) $\\frac{11}{2}$", "(c) $\\frac{18}{11}$", "(d) $\\frac{11}{18}$"],
+"correct_ans": 3
+},
+{
+"qNum": 99,
+"text": "यदि 31x5, 9 का अपवर्त्य है, जहाँ x एक अंक है, तब x का मान होगा-",
+"options": ["(a) 1", "(b) 3", "(c) 6", "(d) 9"],
+"correct_ans": 3
+},
+{
+"qNum": 100,
+"text": "यदि दो भिन्नों का गुणनफल $\\frac{14}{15}$ तथा उनका भागफल $\\frac{35}{24}$ हो, तो इनमें से बड़ी भिन्न है-",
+"options": ["(a) $\\frac{7}{4}$", "(b) $\\frac{7}{6}$", "(c) $\\frac{6}{7}$", "(d) $\\frac{7}{8}$"],
+"correct_ans": 1
+},
+{
+"qNum": 101,
+"text": "निम्नलिखित में कौन सबसे बड़ी संख्या है? $\\frac{3}{2}, \\frac{4}{3}, \\frac{5}{6}, \\frac{9}{7}$",
+"options": ["(a) $\\frac{9}{7}$", "(b) $\\frac{4}{3}$", "(c) $\\frac{3}{2}$", "(d) $\\frac{5}{6}$"],
+"correct_ans": 2
+},
+{
+"qNum": 102,
+"text": "$\\{(\\frac{1}{3})^{-1} - (\\frac{1}{4})^{-1}\\}^{-1}$ का मान होगा?",
+"options": ["(a) -1", "(b) 1", "(c) 0", "(d) 3/4"],
+"correct_ans": 0
+},
+{
+"qNum": 103,
+"text": "दिए गये चित्र में कितने वर्ग हैं? <br> <img src='103.png' alt='Diagram' style='max-width:100%; height:auto;' />",
+"options": ["(a) 11", "(b) 12", "(c) 13", "(d) 14"],
+"correct_ans": 3
+},
+{
+"qNum": 104,
+"text": "'गणित सार संग्रह' के लेखक हैं-",
+"options": ["(a) आर्यभट्ट", "(b) भास्कराचार्य", "(c) महावीराचार्य", "(d) ब्रह्मगुप्त"],
+"correct_ans": 2
+},
+{
+"qNum": 105,
+"text": "किसका कथन है कि 'शिक्षक शिक्षण उपकरणों के माध्यम से शिक्षण को स्थायी एवं रोचक बना देते हैं'?",
+"options": ["(a) रस्क", "(b) नन", "(c) मेकन तथा रॉबर्ट्स", "(d) वंशीधर"],
+"correct_ans": 2
+},
+{
+"qNum": 106,
+"text": "गणित शिक्षण की 'स्वयंसिद्ध विधि' में कौन सी विधि सम्मिलित नहीं है?",
+"options": ["(a) यूक्लिड विधि", "(b) गैर-यूक्लिड विधि", "(c) आनुवंशिक विधि", "(d) औपचारिक स्वयं सिद्ध विधि"],
+"correct_ans": 2
+},
+{
+"qNum": 107,
+"text": "विभाजनी का उपयोग किया जाता है-",
+"options": ["(a) कोण बनाने में", "(b) त्रिभुज बनाने में", "(c) आयत बनाने में", "(d) रेखाखण्ड की लम्बाई ज्ञात करने में"],
+"correct_ans": 3
+},
+{
+"qNum": 108,
+"text": "पहली सं. 350 को 20% बढ़ाकर पुनः 20% कम कर दिया गया। अन्ततः वृद्धि या कमी का प्रतिशत होगा-",
+"options": ["(a) 14%", "(b) 4%", "(c) 25%", "(d) 20%"],
+"correct_ans": 1
+},
+{
+"qNum": 109,
+"text": "दो संख्याओं का योग 36 है। उनके म. स. तथा ल. स. क्रमशः 3 और 105 हैं। उन दो संख्याओं के व्युत्क्रमों का योग होगा-",
+"options": ["(a) $\\frac{1}{3}$", "(b) $\\frac{7}{35}$", "(c) $\\frac{4}{35}$", "(d) $\\frac{9}{11}$"],
+"correct_ans": 2
+},
+{
+"qNum": 110,
+"text": "एक आयताकार बाग, जिसकी लम्बाई उसकी चौड़ाई से 4 मीटर अधिक है, का अर्द्धपरिमाप 36 मीटर है। बाग की लम्बाई वाली भुजा की माप होगी-",
+"options": ["(a) 20 मीटर", "(b) 16 मीटर", "(c) 36 मीटर", "(d) 32 मीटर"],
+"correct_ans": 0
+},
+{
+"qNum": 111,
+"text": "राजधानी एक्सप्रेस एक स्टेशन से 7:29 p.m. चलकर अगले गन्तव्य स्थान पर 17 घन्टे 42 मिनट के पश्चात् पहुँचती हैं अगले गंतव्य पर पहुँचने का समय है-",
+"options": ["(a) 1:29 p.m.", "(b) 1:11 a.m.", "(c) 7:42 a.m.", "(d) 1:11 p.m."],
+"correct_ans": 3
+},
+{
+"qNum": 112,
+"text": "कारखाने में कार्यरत कुछ लोगों की आयु वर्षों में इस प्रकार है: 31, 41, 28, 54, 34, 27, 23, 33, 35, 42 आयु का परिसर है-",
+"options": ["(a) 31 वर्ष", "(b) 35 वर्ष", "(c) 23 वर्ष", "(d) 20 वर्ष"],
+"correct_ans": 0
+},
+{
+"qNum": 113,
+"text": "सबसे छोटी अभाज्य संख्या है-",
+"options": ["(a) शून्य", "(b) एक", "(c) दो", "(d) three"],
+"correct_ans": 2
+},
+{
+"qNum": 114,
+"text": "'$\\pi$' है-",
+"options": ["(a) एक विषम संख्या", "(b) एक सम संख्या", "(c) एक अभाज्य संख्या", "(d) एक अपरिमेय संख्या"],
+"correct_ans": 3
+},
+{
+"qNum": 115,
+"text": "यदि   $$9^{2x-1} = 2^5 - 5$$ तो x का मान है-",
+"options": ["(a) 2", "(b) $-\\frac{1}{4}$", "(c) $-\\frac{5}{4}$", "(d) $\\frac{5}{4}$"],
+"correct_ans": 3
+},
+{
+"qNum": 116,
+"text": "किसी घनाभ के तीन संलग्न फलकों के पार्श्व पृष्ठ के क्षेत्रफल 7:10:14 के अनुपात में है। यदि घनाभ का आयतन 350 सेमी³ हो, तो सबसे लम्बी भुजा की लम्बाई है-",
+"options": ["(a) 7 सेमी", "(b) 14 सेमी", "(c) 10 सेमी", "(d) 20 सेमी"],
+"correct_ans": 2
+},
+{
+"qNum": 117,
+"text": "3 की तीन क्रमागत गुणज-संख्याओं का योग 99 है। ये गुणज होगा-",
+"options": ["(a) 24,33,42", "(b) 32,33,34", "(c) 30,33,36", "(d) इनमें से कोई नहीं"],
+"correct_ans": 2
+},
+{
+"qNum": 118,
+"text": "सीमा एक घण्टे में किताब का 1/5 भाग पढ़ती है। यदि वह किताब को $2\\frac{1}{3}$ घंटे पढ़कर सो जाती है तो किताब का कितना भाग पढ़ने को शेष बचता है?",
+"options": ["(a) $\\frac{7}{15}$", "(b) $\\frac{3}{7}$", "(c) $\\frac{8}{15}$", "(d) $\\frac{1}{5}$"],
+"correct_ans": 2
+},
+{
+"qNum": 119,
+"text": "वह छोटी से छोटी संख्या जिसे 269 में जोड़ने पर पूर्ण वर्ग संख्या प्राप्त हो, वह है-",
+"options": ["(a) 31", "(b) 16", "(c) 7", "(d) 20"],
+"correct_ans": 3
+},
+{
+"qNum": 120,
+"text": "यदि किसी बस की चाल, इसके सामान्य चाल से 5 किमी/घण्टा अधिक कर दिया, तो यह 300 किमी की यात्रा तय करने में 2 घण्टे कम समय लेती है। बस की सामान्य चाल (किमी/घण्टा में) हैं-",
+"options": ["(a) 25", "(b) 30", "(c) 45", "(d) इनमें से कोई नहीं"],
+"correct_ans": 0
+},
+{
+"qNum": 121,
+"text": "शिक्षक की सबसे बहुमूल्य निधि है उसकी",
+"options": ["(a) सेवा", "(b) वेतन", "(c) गर्व", "(d) छात्रों का विश्वास"],
+"correct_ans": 3
+},
+{
+"qNum": 122,
+"text": "परिकल्पना को बार-बार परीक्षण करने से गलत नहीं पाया जाता है, तो वह है एक",
+"options": ["(a) सिद्धान्त", "(b) कानून", "(c) खोज", "(d) मूल संकल्पना"],
+"correct_ans": 0
+},
+{
+"qNum": 123,
+"text": "निम्नलिखित में से सबसे उपयुक्त शिक्षण विधि है",
+"options": ["(a) विचारगोष्ठी एवं श्रुतलेख", "(b) श्रुतलेख एवं दिया गया कार्य", "(c) विचारगोष्ठी एवं कार्य योजना", "(d) व्याख्यान एवं श्रुतलेख"],
+"correct_ans": 2
+},
+{
+"qNum": 124,
+"text": "निम्नलिखित में से कौन-सी ग्रीन हाउस गैस नहीं है?",
+"options": ["(a) carbon dioxide", "(b) nitrous oxide", "(c) हीलियम", "(d) मेथेन"],
+"correct_ans": 2
+},
+{
+"qNum": 125,
+"text": "ध्वनि प्रदूषण का मापन किस इकाई द्वारा किया जाता है?",
+"options": ["(a) जूल", "(b) डेसिबल", "(c) न्यूटन", "(d) नैनो इकाई"],
+"correct_ans": 1
+},
+{
+"qNum": 126,
+"text": "निम्न में से किस स्थलाकृति का निर्माण हिमानी द्वारा हुआ है?",
+"options": ["(a) लैपीज", "(b) 'यू' आकार की घाटी", "(c) 'वी' आकार की घाटी", "(d) जल-प्रपात"],
+"correct_ans": 1
+},
+{
+"qNum": 127,
+"text": "निम्न नदियों में से कौन-सी नदी बंगाल की खाड़ी में गिरती है?",
+"options": ["(a) ताप्ती", "(b) सुबर्णरखा", "(c) नर्मदा", "(d) सिन्धु"],
+"correct_ans": 1
+},
+{
+"qNum": 128,
+"text": "राकेश कक्षा '5' पर्यावरण विज्ञान शिक्षक द्वारा दिये गये कार्य को समय से प्रस्तुत नहीं करता है अतः सबसे उपयुक्त सुधारात्मक उपाय हो सकता है।",
+"options": [
+"(a) प्रधानाध्यापक की जानकारी में लाना।",
+"(b) खेल की कक्षा में जाने पर प्रतिबन्ध लगाना",
+"(c) उसकी अनियमितताओं के कारणों को जानकर उसे सही मार्गदर्शन देना।",
+"(d) उसकी अनियमितताओं को लिखित जानकारी माता-पिता को देना।"
+],
+"correct_ans": 2
+},
+{
+"qNum": 129,
+"text": "मध्य प्रदेश में कौन-सा शहर झीलों का शहर कहलाता है?",
+"options": ["(a) भोपाल", "(b) उज्जैन", "(c) इन्दौर", "(d) ग्वालियर"],
+"correct_ans": 0
+},
+{
+"qNum": 130,
+"text": "निम्न में से कौन-सा सागर यूरोप को अफ्रीका से अलग करता है ?",
+"options": ["(a) लाल सागर", "(b) काला सागर", "(c) अरब सागर", "(d) भूमध्य सागर"],
+"correct_ans": 3
+},
+{
+"qNum": 131,
+"text": "अन्तर्राष्ट्रीय 'ओजोन दिवस' मनाया जाता है ?",
+"options": ["(a) 16 सितम्बर", "(b) 7 दिसम्बर", "(c) 30 मार्च", "(d) 22 अप्रैल"],
+"correct_ans": 0
+},
+{
+"qNum": 132,
+"text": "किसी खाद्य श्रृंखला में शाकाहारी होते हैं",
+"options": ["(a) प्राथमिक उत्पादक", "(b) प्राथमिक उपभोक्ता", "(c) द्वितीयक उपभोक्ता", "(d) अपघटनकर्ता"],
+"correct_ans": 1
+},
+{
+"qNum": 133,
+"text": "पारिस्थितिक तंत्र के तत्त्वों के चक्रण को क्या कहते हैं?",
+"options": ["(a) रासायनिक चक्र", "(b) जैव-भू-रासायनिक चक्र", "(c) भूगर्भीय चक्र", "(d) भू-रासायनिक चक्र"],
+"correct_ans": 1
+},
+{
+"qNum": 134,
+"text": "निम्नलिखित ईंधनों में से कौन-सा न्यूनतम पर्यावरणीय प्रदूषण उत्पन्न करता है?",
+"options": ["(a) डीजल", "(b) पेट्रोल", "(c) हाइड्रोजन", "(d) कोयला"],
+"correct_ans": 2
+},
+{
+"qNum": 135,
+"text": "संकटग्रस्त जन्तु दैत्याकार पान्डा पाया जाता है",
+"options": ["(a) ऑस्ट्रेलिया में", "(b) भारत में", "(c) चीन में", "(d) ब्राज़ील में"],
+"correct_ans": 2
+},
+{
+"qNum": 136,
+"text": "निम्नलिखित किस गैस के कारण भोपाल गैस त्रासदी हुई?",
+"options": ["(a) क्लोरो-फ्लोरो कार्बन", "(b) कार्बन डाईऑक्साइड", "(c) नाईट्रस ऑक्साइड", "(d) मिथाईल आइसोसायनेट"],
+"correct_ans": 3
+},
+{
+"qNum": 137,
+"text": "किस देश में क्रिसमस का त्योहार गर्मियों में मनाया जाता है?",
+"options": ["(a) जापान", "(b) भारत", "(c) ऑस्ट्रेलिया", "(d) अमरीका"],
+"correct_ans": 2
+},
+{
+"qNum": 138,
+"text": "'गिर वन्य जीव अभयारण्य' निम्न में से किस वन्य जीव का संरक्षण करता है ?",
+"options": ["(a) हाथी", "(b) साँप", "(c) गैंडा", "(d) शेर"],
+"correct_ans": 3
+},
+{
+"qNum": 139,
+"text": "निम्न में से कौन-सी प्राकृतिक वनस्पति मरुस्थलीय प्रदेशों में पाई जाती है?",
+"options": ["(a) महोगनी", "(b) कैक्टस", "(c) फर", "(d) चंदन"],
+"correct_ans": 1
+},
+{
+"qNum": 140,
+"text": "'ग्रीन मफ्लर' सम्बन्धित है",
+"options": ["(a) मृदा प्रदूषण से", "(b) वायु प्रदूषण से", "(c) ध्वनि प्रदूषण से", "(d) जल प्रदूषण से"],
+"correct_ans": 2
+},
+{
+"qNum": 141,
+"text": "भू-पारिस्थितिकीय तंत्र में ऊर्जा का महत्त्वपूर्ण स्त्रोत",
+"options": ["(a) सूर्य है।", "(b) पृथ्वी है।", "(c) चन्द्रमा है।", "(d) शुक्र है।"],
+"correct_ans": 0
+},
+{
+"qNum": 142,
+"text": "टाइटन किस ग्रह का प्राकृतिक उपग्रह है?",
+"options": ["(a) वरुण", "(b) बुध", "(c) शनि", "(d) शुक्र"],
+"correct_ans": 2
+},
+{
+"qNum": 143,
+"text": "निम्नलिखित में से कौन-सी बायो-डीजल की फसल है?",
+"options": ["(a) कपास", "(b) जट्रोफा", "(c) गन्ना", "(d) आलू"],
+"correct_ans": 1
+},
+{
+"qNum": 144,
+"text": "पर्यावरण संरक्षण अधिनियम किस वर्ष पारित हुआ था?",
+"options": ["(a) 1982", "(b) 1986", "(c) 1992", "(d) 1996"],
+"correct_ans": 1
+},
+{
+"qNum": 145,
+"text": "भू-मण्डलीय तापन का कारण है",
+"options": ["(a) हिमनदों में वृद्धि", "(b) कार्बन डाईऑक्साइड में वृद्धि", "(c) कार्बन डाईऑक्साइड में कमी", "(d) वनों में वृद्धि"],
+"correct_ans": 1
+},
+{
+"qNum": 146,
+"text": "निम्नलिखित में से किसमें सर्वाधिक जैव-विविधता पायी जाती है ?",
+"options": [
+"(a) शीतोष्ण पर्णपाती वन बायोम",
+"(b) उष्णकटिबन्धीय सदाबहार वर्षा वन बायोम",
+"(c) शीतोष्ण घास प्रदेश बायोम",
+"(d) सवाना बायोम"
+],
+"correct_ans": 1
+},
+{
+"qNum": 147,
+"text": "निम्न में से किस मृदा का निर्माण लावा द्वारा होता है?",
+"options": ["(a) लाल मिट्टी", "(b) काली मिट्टी", "(c) जलोढ़ मिट्टी", "(d) लैटेराइट"],
+"correct_ans": 1
+},
+{
+"qNum": 148,
+"text": "वायुमण्डल की कौन-सी परत प्रकाश की पराबैंगनी किरणों को पृथ्वी की सतह पर आने से रोकती है?",
+"options": ["(a) समताप मण्डल", "(b) क्षोभ मण्डल", "(c) आयन मण्डल", "(d) मध्य मण्डल"],
+"correct_ans": 0
+},
+{
+"qNum": 149,
+"text": "गंगा Action Plan को लाने का उद्देश्य निम्नलिखित में से किस सुधार हेतु है?",
+"options": ["(a) जल की गुणवत्ता", "(b) जल का वेग", "(c) जल की प्रचुरता", "(d) जल के तापमान"],
+"correct_ans": 0
+},
+{
+"qNum": 150,
+"text": "निम्नलिखित में कौन-सा वृक्ष जैविक कीटनाशक का उत्पादक है?",
+"options": ["(a) नीम", "(b) देवदार", "(c) चीड़", "(d) ओक़"],
+"correct_ans": 0
+}
 ];
-</script>
 
-<script>
-(function(){
-  // Basic UI glue so the login button actually shows the exam and questions render.
-  window.currentQ = 0;
-  window.answers = [];
+        let currentIdx = 0;
+        let timerInterval;
+        let globalUserPhotoData = null; 
+        let remainingSeconds = 3 * 60 * 60; // 3 Hours default
+        let isResumedSession = false;
 
-  function initExamUI(){
-    // populate question grid
-    const grid = document.getElementById('dynamic-grid');
-    if(grid && Array.isArray(window.myQuestions)){
-      grid.innerHTML='';
-      window.myQuestions.forEach((q, idx)=>{
-        const btn = document.createElement('div');
-        btn.className = 'grid-num';
-        btn.textContent = q.qNum || (idx+1);
-        btn.onclick = function(){ window.currentQ = idx; renderQuestion(window.currentQ); // close palette on mobile
-          const pal = document.querySelector('.palette-container'); if(pal && pal.classList.contains('show')) pal.classList.remove('show');
+        // Base structure setup
+        let examState = myQuestions.map(() => ({
+            status: 'not-visited',
+            selectedOption: null
+        }));
+
+        // --- ON WINDOW LOAD CHECK LOCALSTORAGE ---
+        window.onload = function() {
+            const savedState = localStorage.getItem('nta_mock_state');
+            if (savedState) {
+                // Progress blocks found, show panel
+                document.getElementById('resume-panel').style.display = 'block';
+                document.getElementById('login-fields-container').style.display = 'none'; // hide fields initially
+                
+                // Pre-populate candidate metadata if found
+                let cachedMeta = localStorage.getItem('nta_mock_meta');
+                if(cachedMeta) {
+                    let meta = JSON.parse(cachedMeta);
+                    document.getElementById('user-name-input').value = meta.name || "";
+                    document.getElementById('user-roll-input').value = meta.roll || "";
+                }
+            } else {
+                document.getElementById('resume-panel').style.display = 'none';
+            }
         };
-        grid.appendChild(btn);
-      });
-    }
-    renderQuestion(window.currentQ);
-  }
 
-  window.renderQuestion = function(i){
-    const area = document.getElementById('dynamic-question-area');
-    if(!area) return;
-    const q = window.myQuestions && window.myQuestions[i];
-    if(!q){ area.innerHTML = '<div style="padding:20px">No question available</div>'; return; }
-    let html = '<div class="question-title">Q ' + (q.qNum || (i+1)) + '</div>';
-    html += '<div class="math-text">' + (q.text || '') + '</div>';
-    html += '<ul class="options-list">';
-    (q.options || []).forEach((opt, k)=>{
-      const checked = (window.answers[i] === k) ? 'checked' : '';
-      html += '<li class="option-item"><label><input type="radio" name="opt" value="'+k+'" '+checked+' onchange="window.answers['+i+']='+k+'">&nbsp;'+opt+'</label></li>';
-    });
-    html += '</ul>';
-    area.innerHTML = html;
-    // update active in grid
-    const nums = document.querySelectorAll('.grid-num');
-    nums.forEach((el, idx)=> el.classList.toggle('active', idx===i));
-  };
+        // --- AUTOMATIC BACKGROUND AUTO-SAVE ENGINE ---
+        // Tab close/back karne par automatic bina kisi button ke background me data surakshit ho jata hai
+        window.addEventListener('beforeunload', function (e) {
+            // Agar result screen open nahi hai aur pariksha chal rhi hai, to surakshit save karein
+            if (document.getElementById('exam-screen').style.display === 'flex') {
+                saveStateToLocalStorage();
+            }
+        });
 
-  window.saveAndNext = function(){
-    const sel = document.querySelector('input[name="opt"]:checked');
-    if(sel) window.answers[window.currentQ] = parseInt(sel.value);
-    if(window.currentQ < (window.myQuestions.length - 1)){
-      window.currentQ++; window.renderQuestion(window.currentQ);
-    } else {
-      alert('You have reached last question');
-    }
-  };
+        function handleResumeDecision(wantResume) {
+            if (wantResume) {
+                // Read from localStorage
+                const savedState = localStorage.getItem('nta_mock_state');
+                const savedTime = localStorage.getItem('nta_mock_time');
+                const savedMeta = localStorage.getItem('nta_mock_meta');
 
-  window.clearResponse = function(){
-    delete window.answers[window.currentQ]; window.renderQuestion(window.currentQ);
-  };
+                if (savedState) examState = JSON.parse(savedState);
+                if (savedTime) remainingSeconds = parseInt(savedTime, 10);
+                
+                let name = "Student", roll = "000000000000";
+                if (savedMeta) {
+                    let parsed = JSON.parse(savedMeta);
+                    name = parsed.name || "Student";
+                    roll = parsed.roll || "000000000000";
+                    globalUserPhotoData = parsed.photo || null;
+                }
 
-  window.saveAndMarkReview = function(){
-    // minimal implementation: mark as answered and move next
-    // In a full implementation you'd track review flags
-    window.saveAndNext();
-  };
+                isResumedSession = true;
 
-  window.markReviewAndNext = function(){
-    // stub: just move next
-    if(window.currentQ < (window.myQuestions.length - 1)){
-      window.currentQ++; window.renderQuestion(window.currentQ);
-    }
-  };
+                // Fire Screen Transition directly
+                document.getElementById('attendance-screen').style.display = 'none';
+                document.getElementById('exam-screen').style.display = 'flex';
+                
+                document.getElementById('candidate-name').innerText = name;
+                document.getElementById('result-candidate-name').innerText = name;
+                document.getElementById('result-candidate-roll').innerText = `Roll Number: ${roll} | National Testing Agency`;
 
-  window.navigateQuestion = function(dir){
-    const next = window.currentQ + dir;
-    if(next >=0 && next < window.myQuestions.length){ window.currentQ = next; window.renderQuestion(window.currentQ); }
-  };
+                if(globalUserPhotoData) {
+                    document.getElementById('candidate-photo').src = globalUserPhotoData;
+                    document.getElementById('result-candidate-photo').src = globalUserPhotoData;
+                } else {
+                    setFallbackAvatar();
+                }
 
-  window.submitAttendance = function(){
-    try{
-      const name = (document.getElementById('user-name-input')||{}).value || 'Student';
-      const photoInput = document.getElementById('user-photo-input');
-      if(photoInput && photoInput.files && photoInput.files[0]){
-        const url = URL.createObjectURL(photoInput.files[0]);
-        const img = document.getElementById('candidate-photo'); if(img) img.src = url;
-        const rimg = document.getElementById('result-candidate-photo'); if(rimg) rimg.src = url;
-      }
-      const nameSpan = document.getElementById('candidate-name'); if(nameSpan) nameSpan.textContent = name;
-      const rname = document.getElementById('result-candidate-name'); if(rname) rname.textContent = name;
+                buildQuestionGrid();
+                
+                // Jump to the first question that is not-answered or answered
+                let nextToLoad = examState.findIndex(s => s.status === 'not-answered');
+                if(nextToLoad === -1) nextToLoad = 0;
+                
+                loadQuestion(nextToLoad);
+                startExamTimer();
+            } else {
+                // Clear state and start fresh standard login
+                localStorage.removeItem('nta_mock_state');
+                localStorage.removeItem('nta_mock_time');
+                localStorage.removeItem('nta_mock_meta');
+                
+                document.getElementById('resume-panel').style.display = 'none';
+                document.getElementById('login-fields-container').style.display = 'block';
+                document.getElementById('user-name-input').value = "";
+                document.getElementById('user-roll-input').value = "";
+            }
+        }
 
-      const att = document.getElementById('attendance-screen');
-      const exam = document.getElementById('exam-screen');
-      if(att) att.style.display = 'none';
-      if(exam) exam.style.display = 'flex';
+        function setFallbackAvatar() {
+            let fallbackSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c7d1d8'><circle cx='12' cy='12' r='12' fill='%23f2f3f5'/><circle cx='12' cy='8.5' r='4' fill='%23c7d1d8'/><path d='M12 14c-4.42 0-8 2.58-8 5.75v.25h16v-.25c0-3.17-3.58-5.75-8-5.75z' fill='%23c7d1d8'/></svg>";
+            document.getElementById('candidate-photo').src = fallbackSvg;
+            document.getElementById('result-candidate-photo').src = fallbackSvg;
+        }
 
-      // allow scrolling on mobile
-      document.body.style.overflow = 'auto';
+        function submitAttendance() {
+            let nameInput = document.getElementById('user-name-input').value.trim();
+            let rollInput = document.getElementById('user-roll-input').value.trim();
+            const photoInput = document.getElementById('user-photo-input').files[0];
 
-      // initialize UI after slight delay to ensure DOM reflow
-      setTimeout(initExamUI, 50);
-    }catch(e){ console.error('submitAttendance error', e); }
-  };
+            if (!nameInput) nameInput = "Student";
+            if (!rollInput) rollInput = "000000000000";
 
-  // ensure togglePalette exists
-  window.togglePalette = window.togglePalette || function(){ const p = document.querySelector('.palette-container'); if(p) p.classList.toggle('show'); };
+            // Set content instantly to memory
+            document.getElementById('candidate-name').innerText = nameInput;
+            document.getElementById('result-candidate-name').innerText = nameInput;
+            document.getElementById('result-candidate-roll').innerText = `Roll Number: ${rollInput} | National Testing Agency`;
 
-  // If someone navigates directly to exam-screen, init UI
-  document.addEventListener('DOMContentLoaded', function(){ if(document.getElementById('exam-screen') && getComputedStyle(document.getElementById('exam-screen')).display !== 'none') { initExamUI(); } });
-})();
-</script>
+            document.getElementById('attendance-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'flex';
 
+            if (photoInput) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    globalUserPhotoData = e.target.result;
+                    document.getElementById('candidate-photo').src = globalUserPhotoData;
+                    document.getElementById('result-candidate-photo').src = globalUserPhotoData;
+                    saveStateToLocalStorage(); 
+                }
+                reader.readAsDataURL(photoInput);
+            } else {
+                setFallbackAvatar();
+                saveStateToLocalStorage();
+            }
+            
+            buildQuestionGrid();
+            loadQuestion(0);
+            startExamTimer();
+        }
+
+        function buildQuestionGrid() {
+            const gridContainer = document.getElementById('dynamic-grid');
+            gridContainer.innerHTML = ""; 
+
+            examState.forEach((state, index) => {
+                const numBox = document.createElement('div');
+                numBox.id = `grid-box-${index}`;
+                numBox.className = `grid-num st-${state.status}`;
+                numBox.innerText = (index + 1) < 10 ? '0' + (index + 1) : (index + 1);
+                
+                numBox.onclick = function() {
+                    if (examState[currentIdx].status === 'not-visited') {
+                        updateStatus(currentIdx, 'not-answered');
+                    }
+                    loadQuestion(index);
+                };
+                gridContainer.appendChild(numBox);
+            });
+            updateLegendCounters();
+        }
+
+        function getSubjectName(qIndex) {
+            const qNum = qIndex + 1;
+            if (qNum >= 1 && qNum <= 30) return "1. बाल विकास एवं शिक्षण विधि (CDP)";
+            if (qNum >= 31 && qNum <= 60) return "2. हिन्दी भाषा (Hindi)";
+            if (qNum >= 61 && qNum <= 90) return "3. English Language";
+            if (qNum >= 91 && qNum <= 120) return "4. गणित (Mathematics)";
+            if (qNum >= 121 && qNum <= 150) return "5. पर्यावरणीय अध्ययन (EVS)";
+            return "General Knowledge";
+        }
+
+        function loadQuestion(index) {
+            document.querySelectorAll('.grid-num').forEach(el => el.classList.remove('active'));
+            
+            currentIdx = index;
+            const q = myQuestions[index];
+            const state = examState[index];
+
+            const currentGridBox = document.getElementById(`grid-box-${index}`);
+            if (currentGridBox) currentGridBox.classList.add('active');
+
+            document.getElementById('subject-name').innerText = getSubjectName(index);
+
+            const area = document.getElementById('dynamic-question-area');
+            let optionsHTML = "";
+            
+            q.options.forEach((opt, oIdx) => {
+                const isChecked = state.selectedOption === oIdx ? "checked" : "";
+                optionsHTML += `
+                    <li class="option-item">
+                        <input type="radio" name="dynamic-opt" id="opt-${oIdx}" value="${oIdx}" ${isChecked} onclick="selectRadio(${oIdx})">
+                        <label for="opt-${oIdx}">&nbsp; ${opt}</label>
+                    </li>
+                `;
+            });
+
+            // --- PASSAGE LOGIC START ---
+            let passageHTML = "";
+            
+            if (index >= 150 && index <= 150) {
+                const passage1Text = `स्पष्टता, आत्म-विश्वास विषय की अच्छी पकड़ और प्रभावशाली भाषा में अपने विचारों और भावनाओं को व्यक्त करना ही सम्प्रेषण-कला है, जो निरंतर अभ्यास से निखारी जा सकती है। एक दिन में कोई अच्छा वक्ता नहीं बन सकता तथा भाषा पर अनायास ही किसी की पकड़ नहीं हो पाती। इसी अभ्यास से स्वामी विवेकानन्द ने जिस सम्प्रेषण-कला का विकास किया था, उसने विश्वधर्म सम्मेलन में लाखों अमेरिका-निवासियों को चकित और मोहित कर दिया था।`; 
+                passageHTML = `
+                    <div class="passage-box">
+                        <span class="passage-title">निर्देश (प्र. 46 - 47): निम्नलिखित गद्यांश को पढ़कर पूछे गए प्रश्नों के उत्तर दीजिए।</span>
+                        ${passage1Text}
+                    </div>
+                `;
+            } 
+        
+            else if (index >= 150 && index <= 150) {
+                const passage2Text = `Yesterday, two brave children of Gangapur were awarded Brave Hearts Award. They have exhibited a great spirit of selflessness and courage. Harsh, a twelve-year-old boy, saved a little girl from drowning in the river that flows along his village. Garima has been awarded for her presence of mind.`;
+                passageHTML = `
+                    <div class="passage-box">
+                        <span class="passage-title">Directions (Q. 78 - 79): Read the following passage carefully and answer the questions.</span>
+                        ${passage2Text}
+                    </div>
+                `;
+            }
+            // --- PASSAGE LOGIC END ---
+
+            area.innerHTML = `
+                <div class="question-title">Question ${index + 1}:</div>
+                ${passageHTML}
+                <div class="math-text">${q.text}</div>
+                <ul class="options-list">${optionsHTML}</ul>
+            `;
+
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([area]).catch(function (err) {
+                    console.log("MathJax failed: " + err.message);
+                });
+            }
+
+            setTimeout(() => {
+                const updatedState = examState[index];
+                if (updatedState.selectedOption !== null) {
+                    const targetRadio = document.getElementById(`opt-${updatedState.selectedOption}`);
+                    if (targetRadio) targetRadio.checked = true;
+                } else {
+                    document.getElementsByName('dynamic-opt').forEach(r => r.checked = false);
+                }
+            }, 50);
+        }
+
+        function selectRadio(oIdx) {
+            examState[currentIdx].selectedOption = oIdx;
+            saveStateToLocalStorage();
+        }
+
+        function updateStatus(idx, newStatus) {
+            examState[idx].status = newStatus;
+            const box = document.getElementById(`grid-box-${idx}`);
+            if (box) {
+                box.className = `grid-num st-${newStatus}`;
+                if (idx === currentIdx) box.classList.add('active');
+            }
+            updateLegendCounters();
+            saveStateToLocalStorage();
+        }
+
+        function saveAndNext() {
+            if (examState[currentIdx].selectedOption !== null) {
+                updateStatus(currentIdx, 'answered');
+            } else {
+                updateStatus(currentIdx, 'not-answered');
+            }
+            navigateQuestion(1);
+        }
+
+        function clearResponse() {
+            examState[currentIdx].selectedOption = null;
+            const radios = document.getElementsByName('dynamic-opt');
+            radios.forEach(r => r.checked = false);
+            if (['answered', 'ans-review'].includes(examState[currentIdx].status)) {
+                updateStatus(currentIdx, 'not-answered');
+            }
+            saveStateToLocalStorage();
+        }
+
+        function saveAndMarkReview() {
+            if (examState[currentIdx].selectedOption !== null) {
+                updateStatus(currentIdx, 'ans-review');
+                navigateQuestion(1);
+            } else {
+                alert("कृपया पहले एक विकल्प का चयन करें!");
+            }
+        }
+
+        function markReviewAndNext() {
+            examState[currentIdx].selectedOption = null;
+            updateStatus(currentIdx, 'review');
+            navigateQuestion(1);
+        }
+
+        function navigateQuestion(step) {
+            let nextIdx = currentIdx + step;
+            if (nextIdx >= 0 && nextIdx < myQuestions.length) {
+                if (examState[nextIdx].status === 'not-visited') {
+                    updateStatus(nextIdx, 'not-answered');
+                }
+                loadQuestion(nextIdx);
+            }
+        }
+
+        // --- LOCALSTORAGE DATA ENGINE (FIXED DETAILS INCLUSION) ---
+        function saveStateToLocalStorage() {
+            localStorage.setItem('nta_mock_state', JSON.stringify(examState));
+            localStorage.setItem('nta_mock_time', remainingSeconds);
+            
+            // Fixed extraction point directly from active element or inputs fallback
+            let currentName = document.getElementById('candidate-name').innerText || document.getElementById('user-name-input').value.trim();
+            let rawRollString = document.getElementById('result-candidate-roll').innerText || "";
+            let currentRoll = "000000000000";
+            
+            if(rawRollString.includes('|')) {
+                currentRoll = rawRollString.split('|')[0].replace('Roll Number:', '').trim();
+            } else {
+                currentRoll = document.getElementById('user-roll-input').value.trim() || "000000000000";
+            }
+
+            let metaObj = {
+                name: currentName || "Student",
+                roll: currentRoll || "000000000000",
+                photo: globalUserPhotoData
+            };
+            localStorage.setItem('nta_mock_meta', JSON.stringify(metaObj));
+        }
+
+        function calculateAndShowResult() {
+            clearInterval(timerInterval);
+            
+            const sections = [
+                { name: "Child Development & Pedagogy (CDP)", start: 0, end: 29, attempted: 0, correct: 0 },
+                { name: "Hindi Language (हिन्दी)", start: 30, end: 59, attempted: 0, correct: 0 },
+                { name: "English Language", start: 60, end: 89, attempted: 0, correct: 0 },
+                { name: "Mathematics (गणित)", start: 90, end: 119, attempted: 0, correct: 0 },
+                { name: "Environmental Studies (EVS)", start: 120, end: 149, attempted: 0, correct: 0 }
+            ];
+
+            let totalScore = 0;
+            let totalAttempted = 0;
+
+            // Secure calculation loop
+            examState.forEach((state, index) => {
+                let selected = state.selectedOption;
+                sections.forEach(sec => {
+                    if (index >= sec.start && index <= sec.end) {
+                        if (selected !== null) {
+                            sec.attempted++;
+                            totalAttempted++;
+                            if (selected === myQuestions[index].correct_ans) {
+                                sec.correct++;
+                                totalScore++;
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Toggle Screens UI
+            document.getElementById('exam-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+
+            // Displays Scoreboard details
+            document.getElementById('final-score-badge').innerText = `${totalScore} / ${myQuestions.length}`;
+            let globalPercentage = ((totalScore / myQuestions.length) * 100).toFixed(2);
+            document.getElementById('final-percentage-badge').innerText = `Percentage: ${globalPercentage}%`;
+
+            // Subject Table Render
+            const tbody = document.getElementById('analysis-table-rows');
+            tbody.innerHTML = "";
+            sections.forEach(sec => {
+                let accuracy = sec.attempted > 0 ? ((sec.correct / sec.attempted) * 100).toFixed(0) : 0;
+                let statusBadge = (accuracy >= 85) ? "badge-excellent" : (accuracy >= 60) ? "badge-good" : "badge-average";
+                let statusText = (accuracy >= 85) ? "Excellent" : (accuracy >= 60) ? "Good Job" : "Needs Work";
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="text-align:left; font-weight:bold;">${sec.name}</td>
+                        <td>${sec.attempted} / 30</td>
+                        <td style="color:#2e7d32; font-weight:bold;">${sec.correct}</td>
+                        <td>${accuracy}%</td>
+                        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+                    </tr>`;
+            });
+
+            const wrongContainer = document.getElementById('wrong-answers-container');
+            wrongContainer.innerHTML = "<h3 style='margin-top:20px; border-bottom:1px solid #ccc; padding-bottom:5px;'>Review Incorrect Answers:</h3>";
+            
+            let incorrectCounter = 0;
+            examState.forEach((state, index) => {
+                if (state.selectedOption !== null && state.selectedOption !== myQuestions[index].correct_ans) {
+                    incorrectCounter++;
+                    let q = myQuestions[index];
+                    wrongContainer.innerHTML += `
+                        <div style="border: 1px solid #ddd; padding: 12px; margin-top: 10px; background-color:#fffafb; border-radius: 5px;">
+                            <p><strong>Q${index + 1}: ${q.text}</strong></p>
+                            <p style="color:red; margin:4px 0 0 0; font-size:0.95rem;">Aapka jawab: ${q.options[state.selectedOption]}</p>
+                            <p style="color:green; margin:2px 0 0 0; font-size:0.95rem;">Sahi jawab: ${q.options[q.correct_ans]}</p>
+                        </div>`;
+                }
+            });
+
+            if(incorrectCounter === 0) {
+                wrongContainer.innerHTML += `<p style="color:green; margin-top:10px;">बधाई हो! आपका कोई भी जवाब गलत नहीं है।</p>`;
+            }
+
+            const insightBox = document.getElementById('dynamic-insight-box');
+            if (globalPercentage >= 80) insightBox.innerHTML = "🎯 <strong>कमाल का प्रदर्शन!</strong> आपकी तैयारी बेहद शानदार है।";
+            else if (globalPercentage >= 50) insightBox.innerHTML = "⚡ <strong>अच्छा प्रयास!</strong> कुछ विषयों पर और ध्यान दें तथा बेहतर करें।";
+            else insightBox.innerHTML = "📚 <strong>अधिक अभ्यास की आवश्यकता!</strong> बेहतर परिणाम के लिए बुनियादी अवधारणाओं का संसोधन करें।";
+            
+            saveStateToLocalStorage();
+        }
+
+        // --- POST SUBMISSION BUTTON HANDLERS ---
+        function resumeFromResults() {
+            document.getElementById('result-screen').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'flex';
+            startExamTimer();
+        }
+
+        function saveProgressFromResults() {
+            saveStateToLocalStorage();
+            alert("आपकी परीक्षा की प्रगति और रिपोर्ट कार्ड को सफलतापूर्वक सहेज (save) लिया गया है!");
+        }
+
+        function quitWithoutSaving() {
+            if(confirm("क्या आप सच में बाहर निकलना चाहते हैं? बाहर निकलने पर इस सत्र का सारा डेटा हटा दिया जाएगा।")) {
+                localStorage.removeItem('nta_mock_state');
+                localStorage.removeItem('nta_mock_time');
+                localStorage.removeItem('nta_mock_meta');
+                window.location.reload();
+            }
+        }
+
+        // Action Trigger Configuration
+        document.querySelector('.btn-submit').onclick = function() {
+            if(confirm("क्या आप सच में परीक्षा सबमिट करना चाहते हैं?")) {
+                calculateAndShowResult();
+            }
+        };
+
+        function updateLegendCounters() {
+            const summary = { 'not-visited': 0, 'not-answered': 0, 'answered': 0, 'review': 0, 'ans-review': 0 };
+            examState.forEach(s => summary[s.status]++);
+            Object.keys(summary).forEach(k => {
+                let el = document.getElementById(`count-${k}`);
+                if(el) el.innerText = summary[k];
+            });
+        }
+
+        function startExamTimer() {
+            if(timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                if (remainingSeconds <= 0) { 
+                    clearInterval(timerInterval); 
+                    calculateAndShowResult(); 
+                    return;
+                }
+                remainingSeconds--;
+                
+                let h = Math.floor(remainingSeconds / 3600);
+                let m = Math.floor((remainingSeconds % 3600) / 60);
+                let s = remainingSeconds % 60;
+                
+                document.getElementById('countdown-timer').innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>

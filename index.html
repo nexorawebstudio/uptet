@@ -760,9 +760,40 @@ width:100%;
 }
 }
 
+
+/* ===== FINAL RESPONSIVE PATCH ===== */
+html,body{max-width:100%;overflow-x:hidden!important;}
+img{max-width:100%;height:auto;}
+table{display:block;overflow-x:auto;max-width:100%;}
+.question-content{padding-bottom:140px;}
+.action-footer .btn,.result-footer-buttons .btn{min-height:44px;}
+@media (max-width:1024px){
+.mobile-palette-toggle{
+display:block!important;
+position:fixed!important;
+top:10px!important;
+right:10px!important;
+bottom:auto!important;
+z-index:10001!important;
+background:#0d47a1;
+color:#fff;
+border:none;
+border-radius:24px;
+padding:10px 14px;
+font-weight:bold;
+}
+.question-content{padding-bottom:260px!important;}
+.question-grid{grid-template-columns:repeat(4,1fr)!important;}
+}
+@media (max-width:768px){
+.question-grid{grid-template-columns:repeat(3,1fr)!important;}
+.palette-container{width:90%!important;}
+}
+
 </style>
 </head>
 <body>
+<button class="mobile-palette-toggle" onclick="togglePalette()">📋 Questions</button>
 
     <!-- SCREEN 1: LOGIN -->
     <div id="attendance-screen">

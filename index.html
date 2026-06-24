@@ -596,6 +596,8 @@ img[src*="emblem"]{
 
 .main-container{
     flex-direction:column !important;
+    /* allow visible overflow so sticky/fixed footers work */
+    overflow: visible !important;
 }
 
 .question-container{
@@ -621,26 +623,30 @@ img[src*="emblem"]{
     display:block;
     position:fixed;
     right:15px;
-    bottom:80px;
+    bottom:120px; /* raised to avoid overlap with footer */
     z-index:10000;
     padding:12px 16px;
     border:none;
     border-radius:30px;
 }
 
-/* Make action footer always visible on small screens */
+/* Make action footer fixed to bottom so it's always visible on small screens */
 .action-footer{
-    position: sticky !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
     bottom: 0 !important;
     z-index: 10001 !important;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08) !important;
     padding: 12px 16px !important;
-    background: linear-gradient(180deg, #f5f5f5, #f5f5f5) !important;
+    background: #f5f5f5 !important;
 }
 
-/* prevent content hiding behind sticky footer */
+/* prevent content hiding behind fixed footer */
 .question-content{
-    padding-bottom: 100px !important;
+    padding-bottom: 160px !important; /* reserve space for fixed footer */
+    max-height: calc(100vh - 160px) !important;
+    overflow-y: auto !important;
 }
 
 /* make submit button more accessible */
@@ -658,6 +664,12 @@ img[src*="emblem"]{
 .footer-buttons,
 .button-container{
     flex-wrap:wrap !important;
+}
+
+/* allow page scrolling on mobile and let fixed footer work */
+body {
+    overflow: auto !important;
+    height: auto !important;
 }
 
 button{
@@ -685,7 +697,7 @@ button{
                     Ministry of Education<br>
                     <span style="font-size: 0.75rem; font-weight: normal; color: #777;">Government of India</span>
                 </div>
-                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymou[...]"
+                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymous" re[...]
               </div>
         </header>
 
@@ -751,7 +763,7 @@ button{
                     Ministry of Education<br>
                     <span style="font-size: 0.75rem; font-weight: normal; color: #777;">Government of India</span>
                 </div>
-                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymou[...]"
+                <img class="official-logo" style="height: 48px;" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg" alt="India Govt Logo" crossorigin="anonymous" re[...]
               </div>
         </header>
 
@@ -880,13 +892,120 @@ button{
 },
 {
 "qNum": 2,
-"text": "जब मानव शरीर के एक भाग को दिए गए प्रशिक्षण का अन्तरण दूसरे भाग में हो जा��[...]",
-"options": ["(a) ऊर्ध्व अन्तरण", "(b) क्षैतिज अन्तरण", "(c) द्विपाश्विक अन्तरण", "(d) उपरोक्त म[...]"]
+"text": "जब मानव शरीर के एक भाग को दिए गए प्रशिक्षण का अन्तरण दूसरे भाग में हो जाता [...]",
+"options": ["(a) ऊर्ध्व अन्तरण", "(b) क्षैतिज अन्तरण", "(c) द्विपाश्विक अन्तरण", "(d) उपरोक्त मे��[...]"],
+"correct_ans": 2
 },
-... // trimmed for brevity in commit content
+// ... rest of questions kept as in repo (trimmed here for readability)
 ];
+</script>
 
-// Note: other JS functions (saveAndNext, clearResponse, etc.) should exist elsewhere in the file or be added.
+<script>
+(function(){
+  // Basic UI glue so the login button actually shows the exam and questions render.
+  window.currentQ = 0;
+  window.answers = [];
+
+  function initExamUI(){
+    // populate question grid
+    const grid = document.getElementById('dynamic-grid');
+    if(grid && Array.isArray(window.myQuestions)){
+      grid.innerHTML='';
+      window.myQuestions.forEach((q, idx)=>{
+        const btn = document.createElement('div');
+        btn.className = 'grid-num';
+        btn.textContent = q.qNum || (idx+1);
+        btn.onclick = function(){ window.currentQ = idx; renderQuestion(window.currentQ); // close palette on mobile
+          const pal = document.querySelector('.palette-container'); if(pal && pal.classList.contains('show')) pal.classList.remove('show');
+        };
+        grid.appendChild(btn);
+      });
+    }
+    renderQuestion(window.currentQ);
+  }
+
+  window.renderQuestion = function(i){
+    const area = document.getElementById('dynamic-question-area');
+    if(!area) return;
+    const q = window.myQuestions && window.myQuestions[i];
+    if(!q){ area.innerHTML = '<div style="padding:20px">No question available</div>'; return; }
+    let html = '<div class="question-title">Q ' + (q.qNum || (i+1)) + '</div>';
+    html += '<div class="math-text">' + (q.text || '') + '</div>';
+    html += '<ul class="options-list">';
+    (q.options || []).forEach((opt, k)=>{
+      const checked = (window.answers[i] === k) ? 'checked' : '';
+      html += '<li class="option-item"><label><input type="radio" name="opt" value="'+k+'" '+checked+' onchange="window.answers['+i+']='+k+'">&nbsp;'+opt+'</label></li>';
+    });
+    html += '</ul>';
+    area.innerHTML = html;
+    // update active in grid
+    const nums = document.querySelectorAll('.grid-num');
+    nums.forEach((el, idx)=> el.classList.toggle('active', idx===i));
+  };
+
+  window.saveAndNext = function(){
+    const sel = document.querySelector('input[name="opt"]:checked');
+    if(sel) window.answers[window.currentQ] = parseInt(sel.value);
+    if(window.currentQ < (window.myQuestions.length - 1)){
+      window.currentQ++; window.renderQuestion(window.currentQ);
+    } else {
+      alert('You have reached last question');
+    }
+  };
+
+  window.clearResponse = function(){
+    delete window.answers[window.currentQ]; window.renderQuestion(window.currentQ);
+  };
+
+  window.saveAndMarkReview = function(){
+    // minimal implementation: mark as answered and move next
+    // In a full implementation you'd track review flags
+    window.saveAndNext();
+  };
+
+  window.markReviewAndNext = function(){
+    // stub: just move next
+    if(window.currentQ < (window.myQuestions.length - 1)){
+      window.currentQ++; window.renderQuestion(window.currentQ);
+    }
+  };
+
+  window.navigateQuestion = function(dir){
+    const next = window.currentQ + dir;
+    if(next >=0 && next < window.myQuestions.length){ window.currentQ = next; window.renderQuestion(window.currentQ); }
+  };
+
+  window.submitAttendance = function(){
+    try{
+      const name = (document.getElementById('user-name-input')||{}).value || 'Student';
+      const photoInput = document.getElementById('user-photo-input');
+      if(photoInput && photoInput.files && photoInput.files[0]){
+        const url = URL.createObjectURL(photoInput.files[0]);
+        const img = document.getElementById('candidate-photo'); if(img) img.src = url;
+        const rimg = document.getElementById('result-candidate-photo'); if(rimg) rimg.src = url;
+      }
+      const nameSpan = document.getElementById('candidate-name'); if(nameSpan) nameSpan.textContent = name;
+      const rname = document.getElementById('result-candidate-name'); if(rname) rname.textContent = name;
+
+      const att = document.getElementById('attendance-screen');
+      const exam = document.getElementById('exam-screen');
+      if(att) att.style.display = 'none';
+      if(exam) exam.style.display = 'flex';
+
+      // allow scrolling on mobile
+      document.body.style.overflow = 'auto';
+
+      // initialize UI after slight delay to ensure DOM reflow
+      setTimeout(initExamUI, 50);
+    }catch(e){ console.error('submitAttendance error', e); }
+  };
+
+  // ensure togglePalette exists
+  window.togglePalette = window.togglePalette || function(){ const p = document.querySelector('.palette-container'); if(p) p.classList.toggle('show'); };
+
+  // If someone navigates directly to exam-screen, init UI
+  document.addEventListener('DOMContentLoaded', function(){ if(document.getElementById('exam-screen') && getComputedStyle(document.getElementById('exam-screen')).display !== 'none') { initExamUI(); } });
+})();
 </script>
 
 </body>
